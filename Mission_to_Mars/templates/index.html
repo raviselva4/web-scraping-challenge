@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Mission to Mars</title>
+  <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}">
+</head>
+
+<body>
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="jumbotron jumbotron-fluid text-center">
+                    <h1>Mission to Mars</h1>
+                    <p><a class="btn btn-primary btn-lg" href="/scrape" role="button">Scrape New Data</a></p>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Mars Data Listings 2nd row-->
+        <div class="row" id="row2">
+            <div class="col-md-12">
+                <header>
+                    <h4>Latest Mars News</h4>
+                </header>
+                <main>
+                    <h6>{{listings.news_title}}</h6>
+                    <small>{{listings.news_para}}</small>
+                </main>  
+            </div>
+        </div>
+
+        <!-- 3rd row -->
+        <div class="row" id="row3">
+            <div class="col-8">
+                <header>
+                    <h4>Featured Mars Image</h4>
+                </header>
+                <main class="featured-image">
+                    <img src="{{listings.image_url}}" class="img-fluid" alt="Featured Mars Image" />
+                </main>
+            </div>
+            <div class="col-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title">Current Weather on Mars</h6>
+                        <small class="card-text">{{listings.weather}}</small>
+                    </div>
+                </div>
+                <div id="facts">
+                    <header>
+                        <p></p>
+                        <h4>Mars Facts</h4>
+                    </header>
+                    <main>
+                        <div id="pdtable">
+                            {{ listings.facts|safe }}
+                        </div>
+                    </main>
+                </div>
+            </div>
+        </div>
+        <!-- 4th row -->
+        <div class="row" id="row4">
+            <div class="col-md-8">
+                <header>
+                    <h4>Mars Hemispheres</h4>
+                </header>
+            </div>
+        </div>
+        <!-- 5th & 6th row -->
+        {% for img_row in listings.hemisphere_images|batch(2) %}
+        <div class="row">
+            {% for img in img_row %}
+            <div class="col-md-4">
+                <img src="{{ img.img_url }}" class="img-thumbnail img-fluid" alt="Mars Hemispheres"/>
+                <figcaption class="figure-caption">{{ img.title }}</figcaption>
+            </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+</body>
+</html>
