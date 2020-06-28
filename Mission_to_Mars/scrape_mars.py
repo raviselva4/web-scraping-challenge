@@ -75,32 +75,43 @@ def scrape():
     ### Part-3 : Current Mars Weather - web scraping
     url3 = 'https://twitter.com/marswxreport?lang=en'
     
-    # Retrieve page with the requests module
-    response3 = requests.get(url3)
-
+    # Visit Twitter website
+    browser = init_browser()
+    browser.visit(url3)
+    html = browser.html
+    
     # Create BeautifulSoup object; parse with 'html.parser' 
-    soup3 = bs(response3.text, 'html.parser')
+    soup3 = bs(html, 'html.parser')
 
-    res3 = soup3.find_all('div', class_="js-tweet-text-container")
+    # Sleep and close the browser after scraping
+    time.sleep(3)
+    browser.quit()
+
+    # Scraping...
+    res3 = soup3.find_all('span')
+    # print(res3)
+    wstr = ""
+    mars_weather = ""
     # finding the latest weather by comapring today's/yesterday/dbyesterday dates...
     for result in res3:
-        print(result.p.text)
-        print("----")
-        if ((result.p.text).find(str(curr_date)) != -1):
-            wstr = result.p.text
+        print(result)
+        if ((result.text).find(str(curr_date)) != -1):
+            wstr = result.text
             wstr = wstr.replace(str(curr_date), cstr)
             break
-        elif ((result.p.text).find(str(y_date)) != -1):
-            wstr = result.p.text
+        elif ((result.text).find(str(y_date)) != -1):
+            wstr = result.text
             wstr = wstr.replace(str(y_date), ystr)
             break
-        elif ((result.p.text).find(str(dby_date)) != -1):
-            wstr = result.p.text
+        elif ((result.text).find(str(dby_date)) != -1):
+            wstr = result.text
             wstr = wstr.replace(str(dby_date), dstr)
             break
-    if len(wstr) > 10:
-        wstr = wstr.rsplit(' ',1)[0]
-        mars_weather = wstr.split(' ',1)[1]
+        print(wstr)
+        if len(wstr) > 10:
+            wstr = wstr.rsplit(' ',1)[0]
+            mars_weather = wstr.split(' ',1)[1]
+    print(mars_weather)
     print("Completed part-3")
     
     ### Part-4 : Mars Facts - web scraping
@@ -198,6 +209,6 @@ def scrape():
         "facts":html_table,
         "hemisphere_images":hemisphere_image_urls
                 }
-    print("Completed part-5")
+    print("Completed scraping")
     # Return results
     return mars_data
