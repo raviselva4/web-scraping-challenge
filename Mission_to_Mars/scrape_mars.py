@@ -209,6 +209,6 @@ def scrape():
         "facts":html_table,
         "hemisphere_images":hemisphere_image_urls
                 }
-    print("Completed scraping")
+    print("Completed scraping...")
     # Return results
     return mars_data
